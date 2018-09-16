@@ -1,5 +1,5 @@
 // request express to create a rout and response
-var express = require ('express');
+var express = require('express');
 var app = express();
 var mysql = require('mysql');
 
@@ -28,67 +28,72 @@ app.use(bodyParser.json());
 
 // Initializes the connection variable to sync with a MySQL database
 var connection = mysql.createConnection({
-  host: "localhost",
+    host: "localhost",
 
-  // Your port; if not 3306
-  port: 3306,
+    // Your port; if not 3306
+    port: 3306,
 
-  // Your username
-  user: "root",
+    // Your username
+    user: "root",
 
-  // Your password
-  password: "",
-  database: "match_db"
+    // Your password
+    password: "",
+    database: "match_db"
 });
 
 
 //getting questions from question table
-app.get('/', function(req, res){
-  connection.query(
-      "SELECT question FROM question GROUP BY id",
-      function(err, response) {
-        res.render('index', {
-          question: response
+app.get('/', function(req, res) {
+    connection.query(
+        "SELECT question FROM question GROUP BY id",
+        function(err, response) {
+            res.render('index', {
+                question: response
+            });
+
         });
-      });
 
 });
 
 
 //form, create a new record on submit
 app.post('/submit', function(req, res) {
-
-	connection.query (
-			"INSERT INTO respond (person_name, question_id, answer_scale) VALUES (?, ?, ?)",
-			[req.body.name, 1, req.body.answer1],
-			function(err, response) {
-        		if (err) throw err;
-      		}
-		);
-	connection.query (
-			"INSERT INTO respond (person_name, question_id, answer_scale) VALUES (?, ?, ?)",
-			[req.body.name, 2, req.body.answer2],
-			function(err, response) {
-        		if (err) throw err;
-        		// res.redirect('/');
-      		}
-		);
-
-	console.log(req.body);
-	// res.redirect('/');
+    // res.json(req.body);
+    // req.body turns into an object
+    connection.query(
+        "INSERT INTO respond (person_name, question_id, answer_scale) VALUES (?, ?, ?)", [req.body.name, 1, req.body.answer1],
+        function(err, response) {
+            if (err) throw err;
+        }
+    );
+    connection.query(
+        "INSERT INTO respond (person_name, question_id, answer_scale) VALUES (?, ?, ?)", [req.body.name, 2, req.body.answer2],
+        function(err, response) {
+            if (err) throw err;
+            res.redirect('/');
+        }
+    );
+    console.log(req.body);
 });
+
+
+
+
+
+
+
 
 // Get all records
-app.get('/all', function(req, res){
-  connection.query(
-      "SELECT * FROM respond GROUP BY id",
-      function(err, response) {
-        res.render('all', {
-          records: response
-        });
-      });
+// app.get('/all', function(req, res){
+//   connection.query(
+//       "SELECT * FROM respond GROUP BY id",
+//       function(err, response) {
+//         res.render('all', {
+//           records: response
+//         });
+//       });
 
-});
+// });
 
 
 
@@ -103,15 +108,3 @@ app.get('/all', function(req, res){
 
 app.listen(3000);
 console.log('3000 is your port');
-
-
-
-
-
-
-
-
-
-
-
-
