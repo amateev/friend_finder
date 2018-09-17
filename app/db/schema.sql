@@ -20,3 +20,13 @@ CREATE TABLE respond (
 	PRIMARY KEY (id),
 	FOREIGN KEY (question_id) REFERENCES question(id)
 );
+
+
+-- select * from question q left join respond r  on  r.question_id = q.id;
+
+
+
+-- ALTER TABLE respond
+-- ADD date TIMESTAMP NOT NULL DEFAULT CURRENT-TIMESTAMP AFTER answer_scale;
+add time:
+ALTER TABLE respond ADD d TIMESTAMP;
